@@ -40,4 +40,14 @@ class course_enrollment(Base):
     enrollment_id = Column(Integer, Sequence("enrollment_id_seq"), primary_key=True)
     enrollment_date = Column(Integer)
     student_id = Column(Integer, ForeignKey("teachers.teacher_id"))
-    course_id = Column(Integer, ForeignKey("teachers.teacher_id"))
+    course_id = Column(Integer, ForeignKey("course_enrollment.enrollment_id"))
+
+
+
+class Grade(Base):
+    __tablename__ = "grades"
+    date_of_graden= Column(Integer)
+    grade_id = Column(Integer, Sequence("grade_id_seq"), primary_key=True)
+    student_id = Column(Integer, ForeignKey("teachers.teacher_id"))
+    course_id = course_id = Column(Integer, ForeignKey("course_enrollment.enrollment_id"))
+    grade = Column = Column(Integer)
