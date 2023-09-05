@@ -1,5 +1,5 @@
 # print("hello wold")
-from sqlalchemy import Column, Integer, String, Sequence
+from sqlalchemy import Column, Integer, String, Sequence, ForeignKey
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 
@@ -25,3 +25,11 @@ class Teacher(Base):
     last_name = Column(String)
     Contact_infornation  = (Integer)
     subject = (String)
+
+
+class course(Base):
+    course_id = Column(Integer, Sequence("course_id_seq"), primary_key=True)
+    course_name = (String)
+    course_code = (Integer)
+    Teacher_id = (Integer, ForeignKey("teachers.teacher_id"))
+    
