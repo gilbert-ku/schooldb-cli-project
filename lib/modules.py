@@ -14,8 +14,8 @@ class Student(Base):
     first_name = Column(String)
     last_name = Column(String)
     date_of_birth = (Integer)
-    address = (String)
-    Contact_infornation  = (Integer)
+    address = Column(String)
+    Contact_infornation  = Column(Integer)
 
 
 class Teacher(Base):
@@ -23,13 +23,21 @@ class Teacher(Base):
     teacher_id = Column(Integer, Sequence("teacher_id_sqs"), primary_key=True)
     first_name = Column(String)
     last_name = Column(String)
-    Contact_infornation  = (Integer)
-    subject = (String)
+    Contact_infornation  = Column(Integer)
+    subject = Column(String)
 
 
 class course(Base):
+    __tablename__ = "course"
     course_id = Column(Integer, Sequence("course_id_seq"), primary_key=True)
-    course_name = (String)
-    course_code = (Integer)
-    Teacher_id = (Integer, ForeignKey("teachers.teacher_id"))
-    
+    course_name = Column(String)
+    course_code = Column(Integer)
+    Teacher_id = Column(Integer, ForeignKey("teachers.teacher_id"))
+
+
+class course_enrollment(Base):
+    __tablename__ = "course_enrollment"
+    enrollment_id = Column(Integer, Sequence("enrollment_id_seq"), primary_key=True)
+    enrollment_date = Column(Integer)
+    student_id = Column(Integer, ForeignKey("teachers.teacher_id"))
+    course_id = Column(Integer, ForeignKey("teachers.teacher_id"))
