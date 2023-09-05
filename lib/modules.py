@@ -17,4 +17,11 @@ class Student(Base):
     address = (String)
     Contact_infornation  = (Integer)
 
-  
+
+class Teacher(Base):
+    __tablename__ = "teachers"
+    teacher_id = Column(Integer, Sequence("teacher_id_sqs"), primary_key=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    Contact_infornation  = (Integer)
+    subject = (String)
