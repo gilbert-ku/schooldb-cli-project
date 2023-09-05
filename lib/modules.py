@@ -1,4 +1,3 @@
-# print("hello wold")
 from sqlalchemy import Column, Integer, String, Sequence, ForeignKey
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
@@ -13,41 +12,40 @@ class Student(Base):
     student_id = Column(Integer, Sequence("student_id_seq"), primary_key=True)
     first_name = Column(String)
     last_name = Column(String)
-    date_of_birth = (Integer)
+    date_of_birth = Column(String)
     address = Column(String)
-    Contact_infornation  = Column(Integer)
+    contact_information = Column(Integer)
 
 
 class Teacher(Base):
     __tablename__ = "teachers"
-    teacher_id = Column(Integer, Sequence("teacher_id_sqs"), primary_key=True)
+    teacher_id = Column(Integer, Sequence("teacher_id_seq"), primary_key=True)
     first_name = Column(String)
     last_name = Column(String)
-    Contact_infornation  = Column(Integer)
+    contact_information = Column(Integer)
     subject = Column(String)
 
 
-class course(Base):
-    __tablename__ = "course"
+class Course(Base):
+    __tablename__ = "courses"
     course_id = Column(Integer, Sequence("course_id_seq"), primary_key=True)
     course_name = Column(String)
     course_code = Column(Integer)
-    Teacher_id = Column(Integer, ForeignKey("teachers.teacher_id"))
+    teacher_id = Column(Integer, ForeignKey("teachers.teacher_id"))
 
 
-class course_enrollment(Base):
-    __tablename__ = "course_enrollment"
+class CourseEnrollment(Base):
+    __tablename__ = "course_enrollments"
     enrollment_id = Column(Integer, Sequence("enrollment_id_seq"), primary_key=True)
     enrollment_date = Column(Integer)
-    student_id = Column(Integer, ForeignKey("teachers.teacher_id"))
-    course_id = Column(Integer, ForeignKey("course_enrollment.enrollment_id"))
-
+    student_id = Column(Integer, ForeignKey("students.student_id"))
+    course_id = Column(Integer, ForeignKey("courses.course_id"))
 
 
 class Grade(Base):
     __tablename__ = "grades"
-    date_of_graden= Column(Integer)
     grade_id = Column(Integer, Sequence("grade_id_seq"), primary_key=True)
-    student_id = Column(Integer, ForeignKey("teachers.teacher_id"))
-    course_id = course_id = Column(Integer, ForeignKey("course_enrollment.enrollment_id"))
-    grade = Column = Column(Integer)
+    date_of_grade = Column(Integer)
+    student_id = Column(Integer, ForeignKey("students.student_id"))
+    course_id = Column(Integer, ForeignKey("courses.course_id"))
+    grade = Column(Integer)
