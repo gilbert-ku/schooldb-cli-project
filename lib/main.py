@@ -9,8 +9,9 @@ from sqlalchemy.orm import sessionmaker
 DATABASE_URI = 'sqlite:///school.db'
 engine = create_engine (DATABASE_URI, echo=True)
 
-
 Session = sessionmaker(bind=engine)
 session = Session()
+
+
 
 session.close()

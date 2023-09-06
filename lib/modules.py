@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Sequence, ForeignKey, Date
+from sqlalchemy import Column, Integer, String, Sequence, ForeignKey, Date, CheckConstraint, UniqueConstraint
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, relationship
 
@@ -9,6 +9,12 @@ engine = create_engine(DATABASE_URI, echo=True)
 
 class Student(Base):
     __tablename__ = "students"
+    __table_args__ = (
+        UniqueConstraint("contact_information",
+            name="unique_contact_information"),
+        CheckConstraint("grade BETWEEN A AND F",
+            name="grade_between_A_and_F")
+    )
     student_id = Column(Integer, Sequence("student_id_seq"), primary_key=True)
     first_name = Column(String)
     last_name = Column(String)
@@ -21,7 +27,12 @@ class Student(Base):
     grades = relationship("Grade", back_populates="student")
 
 class Teacher(Base):
+
     __tablename__ = "teachers"
+    __table_args__ = (
+        UniqueConstraint("contact_information",
+            name="unique_contact_information")
+    )
     teacher_id = Column(Integer, Sequence("teacher_id_seq"), primary_key=True)
     first_name = Column(String)
     last_name = Column(String)
