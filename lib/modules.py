@@ -99,5 +99,6 @@ grade_lookup_data = [
 # Populate the grade lookup table with data
 
 
+
 # Create the tables in the database
 Base.metadata.create_all(engine)
