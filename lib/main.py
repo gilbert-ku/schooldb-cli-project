@@ -146,6 +146,32 @@ def enrollment(student_id, course_id):
 
 
 
+# recode grade
+@add_data.command()
+@click.option('--student-id', prompt='Student ID', type=int, help='Enter the student ID')
+@click.option('--course-id', prompt='Course ID', type=int, help='Enter the course ID')
+@click.option('--grade-value', prompt='Grade (0-100)', type=int, help='Enter the grade (0-100)')
+def record_grade(student_id, course_id, grade_value):
+    """Record a grade for a student in a course."""
+    engine = create_engine('sqlite:///school.db')  # Use your database URL or connection settings
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    # Check if the student and course exist
+    if not session.query(Grade).filter_by(student_id=student_id, course_id=course_id).first():
+        print("Error: No existing grade found for this student in this course.")
+        session.close()
+        return
+
+    # Create a new Grade instance and record the grade
+    grade = Grade(student_id=student_id, course_id=course_id, grade_value=grade_value)
+    session.add(grade)
+    session.commit()
+
+    print("Grade recorded successfully.")
+
+
+
 
 
 if __name__ == '__main__':

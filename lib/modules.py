@@ -76,26 +76,26 @@ class Grade(Base):
     student = relationship("Student", back_populates="grades")
     course = relationship("Course", back_populates="grades")
 
-class GradeLookup(Base):
-    __tablename__ = "grade_lookup"
-    grade_id = Column(Integer, primary_key=True)
-    grade_letter = Column(String, unique=True)  # Letter grade (e.g., 'A', 'B', 'C')
-    grade_value = Column(Integer)  # Numerical equivalent (e.g., 90 for 'A')
+# class GradeLookup(Base):
+#     __tablename__ = "grade_lookup"
+#     grade_id = Column(Integer, primary_key=True)
+#     grade_letter = Column(String, unique=True)  # Letter grade (e.g., 'A', 'B', 'C')
+#     grade_value = Column(Integer)  # Numerical equivalent (e.g., 90 for 'A')
 
-    # Additional columns for descriptions, if needed
-    description = Column(String)
+#     # Additional columns for descriptions, if needed
+#     description = Column(String)
 
-# Example grade lookup values
-# This table maps letter grades to numerical values
-# You can add more rows as needed
-grade_lookup_data = [
-    {'grade_letter': 'A', 'grade_value': 85, 'description': 'Excellent'},
-    {'grade_letter': 'B', 'grade_value': 70, 'description': 'Good'},
-    {'grade_letter': 'C', 'grade_value': 50, 'description': 'Average'},
-    {'grade_letter': 'D', 'grade_value': 35, 'description': 'Below Average'},
-    {'grade_letter': 'F', 'grade_value': 20, 'description': 'Fail'},
+# # Example grade lookup values
+# # This table maps letter grades to numerical values
+# # You can add more rows as needed
+# grade_lookup_data = [
+#     {'grade_letter': 'A', 'grade_value': 85, 'description': 'Excellent'},
+#     {'grade_letter': 'B', 'grade_value': 70, 'description': 'Good'},
+#     {'grade_letter': 'C', 'grade_value': 50, 'description': 'Average'},
+#     {'grade_letter': 'D', 'grade_value': 35, 'description': 'Below Average'},
+#     {'grade_letter': 'F', 'grade_value': 20, 'description': 'Fail'},
    
-]
+# ]
 # Populate the grade lookup table with data
 
 
