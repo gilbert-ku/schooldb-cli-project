@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 
-from modules import Student, GradeLookup, grade_lookup_data,Teacher, Course
+from modules import Student,Teacher, Course, CourseEnrollment
 
 # Define the database connection
 DATABASE_URI = 'sqlite:///school.db'
@@ -19,7 +19,7 @@ session = Session()
 def add_data():
     pass
 
-
+# add students
 @add_data.command()
 @click.option('--first-name', prompt='Enter first name', required=True)
 @click.option('--last-name', prompt='Enter last name', required=True)
@@ -53,7 +53,7 @@ def student(first_name, last_name, date_of_birth, address, contact_information):
         print(f"An error occurred: {str(e)}")
         session.rollback()
 
-
+# add teacher
 @add_data.command()
 @click.option('--first-name', prompt='Enter first name', required=True)
 @click.option('--last-name', prompt='Enter last name', required=True)
@@ -80,7 +80,7 @@ def teacher(first_name, last_name, contact_information, subject):
         print(f"An error occurred: {str(e)}")
         session.rollback()
 
-
+#add courses and teacher
 @add_data.command()
 @click.option('--course-name', prompt='Enter course name', required=True)
 @click.option('--course-code', prompt='Enter course code', required=True, type=int)
@@ -94,14 +94,14 @@ def course(course_name, course_code, teacher_id):
             raise IntegrityError(None, None, "Teacher ID does not exist in the database.")
         
         # Create a new course object
-        new_course = Course(
+        course = Course(
             course_name=course_name,
             course_code=course_code,
             teacher_id=teacher_id
         )
 
         # Add the course to the database
-        session.add(new_course)
+        session.add(course)
 
         # Commit the changes
         session.commit()
@@ -115,6 +115,34 @@ def course(course_name, course_code, teacher_id):
         session.rollback()
     finally:
         session.close()
+
+# enroll student course
+
+@add_data.command()
+@click.option("--student-id", type=int, prompt=True, help="Enter the student ID")
+@click.option("--course-id", type=int, prompt=True, help="Enter the course ID")
+def enrollment(student_id, course_id):
+    """Enroll a student in a course."""
+    enrollment_date = input("Enter the enrollment date (YYYY-MM-DD): ")
+
+    try:
+        # Create a new CourseEnrollment object
+        new_enrollment = CourseEnrollment(
+            enrollment_date=enrollment_date,
+            student_id=student_id,
+            course_id=course_id
+        )
+
+        # Create a session and add the new enrollment to it
+        session = Session()
+        session.add(new_enrollment)
+        session.commit()
+        session.close()
+
+        click.echo(f"Student with ID {student_id} enrolled in course with ID {course_id}.")
+    except Exception as e:
+        click.echo(f"Error: Unable to enroll student in the course. {str(e)}")
+
 
 if __name__ == '__main__':
     add_data()
