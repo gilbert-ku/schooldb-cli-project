@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 
-from modules import Student,Teacher, Course, CourseEnrollment
+from modules import Student,Teacher, Course, CourseEnrollment, Grade, grade_lookup_data, GradeLookup
 
 # Define the database connection
 DATABASE_URI = 'sqlite:///school.db'
@@ -124,6 +124,7 @@ def course(course_name, course_code, teacher_id):
 def enrollment(student_id, course_id):
     """Enroll a student in a course."""
     enrollment_date = input("Enter the enrollment date (YYYY-MM-DD): ")
+    enrollment_date = datetime.strptime(enrollment_date, '%Y-%m-%d').date()
 
     try:
         # Create a new CourseEnrollment object
@@ -144,8 +145,8 @@ def enrollment(student_id, course_id):
         click.echo(f"Error: Unable to enroll student in the course. {str(e)}")
 
 
+
+
+
 if __name__ == '__main__':
     add_data()
-
-
-
