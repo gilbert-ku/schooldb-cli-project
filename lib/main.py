@@ -3,8 +3,9 @@ import click
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
+from sqlalchemy.exc import IntegrityError
 
-from modules import Student, GradeLookup, grade_lookup_data,Teacher
+from modules import Student, GradeLookup, grade_lookup_data,Teacher, Course
 
 # Define the database connection
 DATABASE_URI = 'sqlite:///school.db'
@@ -13,12 +14,13 @@ engine = create_engine(DATABASE_URI, echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+# allow us to have option when we want to a
 @click.group()
-def add_person():
+def add_data():
     pass
 
 
-@add_person.command()
+@add_data.command()
 @click.option('--first-name', prompt='Enter first name', required=True)
 @click.option('--last-name', prompt='Enter last name', required=True)
 @click.option('--date-of-birth', prompt='Enter date of birth (YYYY-MM-DD)', required=True)
@@ -52,7 +54,7 @@ def student(first_name, last_name, date_of_birth, address, contact_information):
         session.rollback()
 
 
-@add_person.command()
+@add_data.command()
 @click.option('--first-name', prompt='Enter first name', required=True)
 @click.option('--last-name', prompt='Enter last name', required=True)
 @click.option('--contact-information', prompt='Enter contact information', required=True)
@@ -78,5 +80,44 @@ def teacher(first_name, last_name, contact_information, subject):
         print(f"An error occurred: {str(e)}")
         session.rollback()
 
+
+@add_data.command()
+@click.option('--course-name', prompt='Enter course name', required=True)
+@click.option('--course-code', prompt='Enter course code', required=True, type=int)
+@click.option('--teacher-id', prompt='Enter teacher ID', required=True, type=int)
+def course(course_name, course_code, teacher_id):
+    try:
+        # Check if the teacher with the provided teacher_id exists in the database
+        teacher = session.query(Teacher).filter_by(teacher_id=teacher_id).first()
+        
+        if teacher is None:
+            raise IntegrityError(None, None, "Teacher ID does not exist in the database.")
+        
+        # Create a new course object
+        new_course = Course(
+            course_name=course_name,
+            course_code=course_code,
+            teacher_id=teacher_id
+        )
+
+        # Add the course to the database
+        session.add(new_course)
+
+        # Commit the changes
+        session.commit()
+        print("Course added successfully!")
+
+    except IntegrityError as e:
+        print(f"Error: {str(e)}")
+        session.rollback()
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        session.rollback()
+    finally:
+        session.close()
+
 if __name__ == '__main__':
-    add_person()
+    add_data()
+
+
+
