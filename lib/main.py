@@ -189,5 +189,23 @@ def query_students():
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
+# Define a new command to query all teacher records
+@add_data.command()
+def query_teachers():
+    try:
+        all_teachers = session.query(Teacher).all()
+
+        for teacher in all_teachers:
+            print(f"Teacher ID: {teacher.teacher_id}")
+            print(f"First Name: {teacher.first_name}")
+            print(f"Last Name: {teacher.last_name}")
+            print(f"Contact Information: {teacher.contact_information}")
+            print(f"Subject: {teacher.subject}")
+            print("\n")
+
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+
+
 if __name__ == '__main__':
     add_data()
