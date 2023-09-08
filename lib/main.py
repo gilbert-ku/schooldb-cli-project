@@ -28,7 +28,7 @@ def add_data():
 @click.option('--contact-information', prompt='Enter contact information', required=True)
 
 
-def student(first_name, last_name, date_of_birth, address, contact_information):
+def add_student(first_name, last_name, date_of_birth, address, contact_information):
     try:
         # Convert date_of_birth to a Python date object
         date_of_birth = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
@@ -59,7 +59,7 @@ def student(first_name, last_name, date_of_birth, address, contact_information):
 @click.option('--last-name', prompt='Enter last name', required=True)
 @click.option('--contact-information', prompt='Enter contact information', required=True)
 @click.option('--subject', prompt='Enter subject', required=True)
-def teacher(first_name, last_name, contact_information, subject):
+def add_teacher(first_name, last_name, contact_information, subject):
     try:
         # Create a new teacher object
         new_teacher = Teacher(
@@ -85,7 +85,7 @@ def teacher(first_name, last_name, contact_information, subject):
 @click.option('--course-name', prompt='Enter course name', required=True)
 @click.option('--course-code', prompt='Enter course code', required=True, type=int)
 @click.option('--teacher-id', prompt='Enter teacher ID', required=True, type=int)
-def course(course_name, course_code, teacher_id):
+def add_course(course_name, course_code, teacher_id):
     try:
         # Check if the teacher with the provided teacher_id exists in the database
         teacher = session.query(Teacher).filter_by(teacher_id=teacher_id).first()
@@ -121,7 +121,7 @@ def course(course_name, course_code, teacher_id):
 @add_data.command()
 @click.option("--student-id", type=int, prompt=True, help="Enter the student ID")
 @click.option("--course-id", type=int, prompt=True, help="Enter the course ID")
-def enrollment(student_id, course_id):
+def enroll_student(student_id, course_id):
     """Enroll a student in a course."""
     enrollment_date = input("Enter the enrollment date (YYYY-MM-DD): ")
     enrollment_date = datetime.strptime(enrollment_date, '%Y-%m-%d').date()
@@ -206,6 +206,49 @@ def query_teachers():
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
+def menu():
+    while True:
+        print("\nOptions:")
+        print("1. Add Student")
+        print("2. Add Teacher")
+        print("3. Add Course")
+        print("4. Enroll Student in Course")
+        print("5. Record Grade")
+        print("6. Query Students")
+        print("7. Query Teachers")
+        print("8. Exit")
+        
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            # Add Student
+            add_student()
+        elif choice == '2':
+            # Add Teacher
+            add_teacher()
+        elif choice == '3':
+            # Add Course
+            add_course()
+        elif choice == '4':
+            # Enroll Student in Course
+            enroll_student()
+        elif choice == '5':
+            # Record Grade
+            record_grade()
+        elif choice == '6':
+            # Query Students
+            query_students()
+        elif choice == '7':
+            # Query Teachers
+            query_teachers()
+        elif choice == '8':
+            # Exit the program
+            break
+        else:
+            print("Invalid choice. Please try again.")
 
 if __name__ == '__main__':
-    add_data()
+    menu()
+
+# if __name__ == '__main__':
+#     add_data()
