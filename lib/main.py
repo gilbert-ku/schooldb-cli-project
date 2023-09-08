@@ -208,6 +208,24 @@ def query_teachers():
 
 def menu():
     while True:
+        print("""
+    Welcome to the School Management CLI App!
+
+    This app allows you to manage students, teachers, courses, enrollments, and grades in a school database. You can perform various operations such as adding students and teachers, enrolling students in courses, recording grades, and querying student and teacher records.
+
+    To get started, simply choose an option from the menu below or type '8' to exit the app:
+
+    1. Add Student
+    2. Add Teacher
+    3. Add Course
+    4. Enroll Student in Course
+    5. Record Grade
+    6. Query Students
+    7. Query Teachers
+    8. Exit
+
+    Feel free to explore the functionalities of this app. If you have any questions or need assistance, type '8' to exit, and we'll be happy to help!
+    """)
         print("\nOptions:")
         print("1. Add Student")
         print("2. Add Teacher")
