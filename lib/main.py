@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 
-from modules import Student,Teacher, Course, CourseEnrollment, Grade, grade_lookup_data, GradeLookup
+from modules import Student,Teacher, Course, CourseEnrollment, Grade
 
 # Define the database connection
 DATABASE_URI = 'sqlite:///school.db'
@@ -170,9 +170,24 @@ def record_grade(student_id, course_id, grade_value):
 
     print("Grade recorded successfully.")
 
+# Define a new command to query all student records
+@add_data.command()
+def query_students():
+    try:
+        # Query all student records
+        all_students = session.query(Student).all()
 
-
-
+        for student in all_students:
+            print(f"Student ID: {student.student_id}")
+            print(f"First Name: {student.first_name}")
+            print(f"Last Name: {student.last_name}")
+            print(f"Date of Birth: {student.date_of_birth}")
+            print(f"Address: {student.address}")
+            print(f"Contact Information: {student.contact_information}")
+            print("\n")
+    
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
 
 if __name__ == '__main__':
     add_data()
